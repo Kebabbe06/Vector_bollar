@@ -12,9 +12,10 @@ class Ball {
   Ball(PVector _pos, PVector _vel, float _mass, float _size, color _col) {
     pos = _pos;
     vel = _vel;
-    acc = new PVector(0,0);
+    mass = _mass;
+    acc = new PVector(0, 0);
+    totalForce = new PVector(0, 0);
     
-    mass =_mass;
     size = _size;
     col = _col;
   }
@@ -25,22 +26,35 @@ class Ball {
   }
 
   void render() {
-    background(0);
-    ellipse(pos.x, pos.y, 5-0, 50);
+    fill(col);
+    ellipse(pos.x, pos.y, 50, 50);
   }
 
   void update() {
-    pos.add(vel);
-    vel.add(acc);
-    acc = totalForce.div(mass);
 
+    acc = totalForce;
+    acc.div(mass);
+    vel.add(acc);
+    pos.add(vel);
     acc.mult(0);
     totalForce.mult(0);
-    if (pos.x > width-25 || pos.x < 25) {
+
+
+    if (pos.x > width-25) {
       vel.x = vel.x * -1;
+      pos.x = pos.x - 25;
     }
-    if (pos.y > height-25 || pos.y < 25) {
-      vel.y = vel.y * -0.95;
+    if (pos.x < 25) {
+      vel.x = vel.x * -1;
+      pos.x = pos.x + 25;
+    }
+    if (pos.y > height-25) {
+      vel.y = vel.y * -1;
+      pos.y = pos.y - 25;
+    }
+    if (pos.y < 25) {
+      vel.y = vel.y * -1;
+      pos.y = pos.y + 25;
     }
   }
 
